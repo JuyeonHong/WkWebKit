@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <style type="text/css">
+            body {
+                padding-top: 40px; 
+            }
+        </style>
+        <title>WKWebView Demo</title>
+        <meta charset="UTF-8">
+    </head>
+    <body style="background-color: white;">
+        <h1>WKWebView Test</h1>
+
+        <form class="form-signin" role="form">
+                <div class="form-content">
+
+                    <label for="email" class="form-email">Already an account?</label>
+                    <br />
+                    <input type="email" id="email" class="form-control" placeholder="Email" required autofocus />
+                    <br />
+                    <input type="password" id="password" class="form-control" placeholder="Password" required>
+                    <br />
+
+                    <button class="btn btn-lg btn-primary btn-block" type="button" onClick="sendLoginAction()">
+                        Submit
+                    </button>
+                </div>
+        </form>
+        <!-- <script type="text/javascript" src='main.js'></script> -->
+        <script type="text/javascript">
+        function sendLoginAction() {
+            try {
+                console.log('sendLoginAction is called')
+                webkit.messageHandlers.loginAction.postMessage(
+                    document.getElementById("email").value + " " + document.getElementById("password").value);
+                } catch(err) {
+                    console.log('The native context does not exist yet');
+                }
+        }
+
+        function mobileHeader() {
+            console.log('mobileHeader is called.')
+            document.querySelector('h1').innerHTML = "WKWebView Mobile";
+        }
+        </script>
+    </body>
+</html>
