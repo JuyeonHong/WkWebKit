@@ -20,15 +20,14 @@ class ViewController: UIViewController {
     var webView: WKWebView!
     
     private func setupWebView() {
-        // 연동을 위한 변수선언
         let contentController = WKUserContentController()
-        let config = WKWebViewConfiguration()
         
         // native -> js call (html 시작에만 가능. 환경설정 용도로 사용. source 부분에 함수 대신 html 직접 삽입 가능)
         // document 로딩이 끝나고 mobileHeader() 함수가 호출됨.
         let userScript = WKUserScript(source: "mobileHeader()",
                                       injectionTime: .atDocumentEnd,
-                                      forMainFrameOnly: true)
+                                      forMainFrameOnly: true
+        )
         contentController.addUserScript(userScript)
         
         // native에서 일반적으로 js 호출
@@ -38,42 +37,30 @@ class ViewController: UIViewController {
 //            }
 //        })
         
-        // 공통 작업
-        config.userContentController = contentController
-        
-        
         // js -> native
         // name에 값을 지정해서 js에서 webkit.messageHandlers.NAME.postMessage("")와 연동
-        // 즉 js에서 webkit.messageHandlers.callbackHandler.postMessage("")를 호출하면 네이티브 호출 가능
+        // 즉 js에서 webkit.messageHandlers.loginAction.postMessage("")를 호출하면 네이티브 호출 가능
         // userContentController에서 처리
         contentController.add(self, name: "loginAction")
         
+        let config = WKWebViewConfiguration()
+        config.userContentController = contentController
         webView = WKWebView(frame: self.view.bounds, configuration: config)
-//        webView.uiDelegate = self
-//        webView.navigationDelegate = self
-        self.view.addSubview(webView)
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         setupWebView()
+        self.view.addSubview(webView)
         
         if let url = URL(string: "http://localhost:3000/main") {
             let request = URLRequest(url: url)
             self.webView.load(request)
-            print("request url")
+            print("request url: \(url)")
         }
     }
 }
-
-//extension ViewController: WKNavigationDelegate {
-//
-//}
-//
-//extension ViewController: WKUIDelegate {
-//
-//}
 
 extension ViewController: WKScriptMessageHandler {
     // js -> native
