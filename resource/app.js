@@ -1,9 +1,7 @@
 var express = require('express');
 var app = express();
 
-// var main = require('./main'); // main 모듈 불러오기
-
-// app.use('/main', main); // /main으로 들어오면 main을 불러라
+app.use(express.static(__dirname + 'public'));
 
 // 주소가 '/' 최상위 url로 들어오면 Hello hello 내보냄
 app.get('/', function(req,res) {
